@@ -1,9 +1,17 @@
-const mongoose = require('mongoose')
-const {Schema} = require("mongoose");
+const { DataTypes } = require("sequelize");
+const {sequelize} = require('../configs/db_connection')
 
-const User = mongoose.model('User', new Schema({
+const Membership = require('./membership_model')
+
+const User = sequelize.define('user', {
     id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     }
-}))
+});
+
+Membership.belongsTo(User)
+User.hasMany(Membership)
+
+module.exports = User

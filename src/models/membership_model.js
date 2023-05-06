@@ -1,28 +1,33 @@
-const mongoose = require('mongoose')
+const {sequelize} = require('../configs/db_connection')
+const {DataTypes} = require('sequelize')
 
-const Membership = mongoose.model('Membership', new mongoose.Schema({
+const User = require('./user_model')
+
+const Membership = sequelize.define('membership', {
     id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
     status: {
-        type: String,
-        default: 'Active'
+        type: DataTypes.STRING,
+        defaultValue: 'Active'
     },
     credits: {
-        type: Number,
-        default: 0
+        type: DataTypes.INTEGER,
+        defaultValue: 0
     },
     start_date: {
-        type: Date,
-        default: Date.now()
+        type: DataTypes.DATE,
+        defaultValue: Date.now()
     },
     end_date: {
-        type: Date,
-        default: Date.now()
-    },
-    user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        type: DataTypes.DATE,
+        defaultValue: Date.now()
     }
-}))
+})
+
+Membership.belongsTo(User)
+User.hasMany(Membership)
+
+module.exports = Membership

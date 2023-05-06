@@ -1,30 +1,20 @@
-const mongoose = require('mongoose')
+const { DataTypes } = require("sequelize");
+const {sequelize} = require('../configs/db_connection')
+const InvoiceLines = require('./invoice_line_model')
 // Invoice model
-const Invoice = mongoose.model('Invoice', new mongoose.Schema({
+const Invoice = sequelize.define('invoice', {
     id: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
     },
-    date: {
-        type: Date,
-        default: Date.now
-    },
-    status: {
-        type: String,
-        default: "Outstanding"
-    },
-    description: {
-        type: String,
-        default: ""
-    },
-    amount: {
-        type: Number,
-        required: true
-    },
-    invoice_lines: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "InvoiceLine"
-        }]
-    }
-}));
+    date: DataTypes.DATE,
+    status: DataTypes.STRING,
+    description: DataTypes.STRING,
+    amount: DataTypes.INTEGER
+});
+
+Invoice.hasMany(InvoiceLines)
+InvoiceLines.belongsTo(Invoice)
+
+module.exports = Invoice

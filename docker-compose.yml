@@ -1,12 +1,14 @@
 version: '3.7'
 services:
   db:
-    image: mongo
+    image: postgres:11
     restart: always
     ports:
-      - "27017:27017"
-    volumes:
-      - ./data:/data/db
+      - "35432:5432"
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
   app:
     build: .
     restart: always
@@ -14,5 +16,6 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    command: npm run dev
     environment:
-      - MONGODB_URI=mongodb://database:27017/virtuagym_database
+      - DATABASE_URL=postgres://user:pass@postgres:5432/db
