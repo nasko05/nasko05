@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+  db:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data:/data/db
+  app:
+    build: .
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      - MONGODB_URI=mongodb://database:27017/virtuagym_database
