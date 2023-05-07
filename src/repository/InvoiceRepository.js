@@ -5,7 +5,7 @@ class InvoiceRepository {
     constructor() {
         this.db = db
     }
-    async create(invoice) {
+    async createOne(invoice) {
         try {
             return await this.db.invoice.create(invoice);
         } catch (err) {
@@ -14,7 +14,7 @@ class InvoiceRepository {
         }
     }
 
-    async findAll() {
+    async findAllInvoices() {
         try {
             return await this.db.invoice.findAll();
         } catch (err) {
@@ -32,7 +32,7 @@ class InvoiceRepository {
         }
     }
 
-    async update(id, updatedInvoice) {
+    async updateOne(id, updatedInvoice) {
         try {
             const [rowsUpdated, [updatedRows]] = await this.db.invoice.update(updatedInvoice, {
                 returning: true,
@@ -48,7 +48,7 @@ class InvoiceRepository {
         }
     }
 
-    async delete(id) {
+    async deleteById(id) {
         try {
             const rowsDeleted = await this.db.invoice.destroy({
                 where: { id },
